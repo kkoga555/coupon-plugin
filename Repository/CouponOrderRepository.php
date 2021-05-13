@@ -95,4 +95,27 @@ class CouponOrderRepository extends AbstractRepository
 
         return $CouponOrder;
     }
+
+    /**
+     * ユーザの利用クーポン情報を取得する.
+     * 
+     * @param int $userId
+     */
+    public function getUserOrderCoupon($userId)
+    {
+        $fields = array('c.coupon_cd', 'c.coupon_name', 'MAX(c.order_date) AS order_date');
+        $qb = $this->createQueryBuilder('c')
+            ->select($fields)
+            ->andWhere('c.coupon_cd IS NOT NULL')
+            ->andWhere('c.order_date IS NOT NULL')
+            ->andWhere('c.user_id = :user_id')
+            ->setParameter('user_id', $userId)
+            ->groupBy('c.coupon_cd')
+            ->addGroupBy('c.coupon_name')
+            ->orderBy('order_date', 'DESC');
+        $query = $qb->getQuery();
+        $result = $query->getResult();
+
+        return $result;
+    }
 }

@@ -39,6 +39,11 @@
             <strong class="text-danger">{{ 'plugin_coupon.front.shopping.message.use_code'|trans({'%code%': CouponOrder.coupon_cd }) }}</strong>
         {% else %}
             {{ 'plugin_coupon.front.shopping.message.empty'|trans }}
+            {% if userOrderCoupon %}
+                {% for item in userOrderCoupon %}
+                    <p style="color:chocolate; font-weight:bold; margin-top:10px;margin-bottom: 10px;">ご利用可能なクーポンコード {{ item.coupon_cd }} （{{ item.coupon_name }}）</p>
+                {% endfor %}
+            {% endif %}
         {% endif %}
         <p><a class="btn btn-default btn-sm" id="coupon_button" href="{{ url('plugin_coupon_shopping') }}">{{ 'plugin_coupon.front.shopping.button.add_coupon'|trans }}</a></p>
     </div>
