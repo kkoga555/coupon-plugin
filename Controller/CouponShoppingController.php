@@ -153,12 +153,13 @@ class CouponShoppingController extends AbstractController
                     }
                 }
 
-                $couponUsedOrNot = $this->couponService->checkCouponUsedOrNot($formCouponCd, $Customer);
-                if ($Coupon && $couponUsedOrNot) {
-                    // 既に存在している
-                    $form->get('coupon_cd')->addError(new FormError(trans('plugin_coupon.front.shopping.sameuser')));
-                    $error = true;
-                }
+                // 利用回数チェックをコメントアウト（無制限にする）
+                // $couponUsedOrNot = $this->couponService->checkCouponUsedOrNot($formCouponCd, $Customer);
+                // if ($Coupon && $couponUsedOrNot) {
+                //     // 既に存在している
+                //     $form->get('coupon_cd')->addError(new FormError(trans('plugin_coupon.front.shopping.sameuser')));
+                //     $error = true;
+                // }
 
                 // ----------------------------------
                 // 値引き項目追加 / 合計金額上書き
