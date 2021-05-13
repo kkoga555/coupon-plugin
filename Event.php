@@ -97,6 +97,20 @@ class Event implements EventSubscriberInterface
         // クーポンが未入力でクーポン情報が存在すればクーポン情報を削除
         $CouponOrder = $this->couponOrderRepository->getCouponOrder($Order->getPreOrderId());
         $parameters['CouponOrder'] = $CouponOrder;
+
+        // 会員情報を取得
+        $app = \Eccube\Application::getInstance();
+        $user = $app['user'];
+
+        // 会員の注文のクーポンを取得する
+        $userOrderCoupon = [];
+        if ($user != "anon.") { // ゲストユーザは"anon."が格納される
+            $userOrderCoupon = $this->couponOrderRepository->getUserOrderCoupon($user['id']);
+
+            dump($userOrderCoupon);
+        }
+        $parameters['userOrderCoupon'] = $userOrderCoupon;
+        
         $event->setParameters($parameters);
 
         if (strpos($event->getView(), 'index.twig') !== false) {
