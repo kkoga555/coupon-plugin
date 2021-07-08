@@ -55,7 +55,13 @@
                         <dl id="coupon_box__cd">
                             <dt><label for="coupon_use_coupon_cd">{{ form.coupon_cd.vars.label|trans }}</label></dt>
                             <dd>
-                                {{ form_widget(form.coupon_cd) }}
+                                {% set coupon_code = app.request.query.get('coupon_code') %}
+                                {% if coupon_code is empty %}
+                                    {{ form_widget(form.coupon_cd) }}
+                                {% else %}
+                                    <!-- クーポンコードのクエリパラメータがあればクーポンコードの初期値を設定する-->
+                                    {{ form_widget(form.coupon_cd, {value:app.request.query.get('coupon_code')}) }}
+                                {% endif %}
                                 {{ form_errors(form.coupon_cd) }}
                             </dd>
                         </dl>

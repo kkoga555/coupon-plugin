@@ -41,7 +41,11 @@
             {{ 'plugin_coupon.front.shopping.message.empty'|trans }}
             {% if userOrderCoupon %}
                 {% for item in userOrderCoupon %}
-                    <p style="color:chocolate; font-weight:bold; margin-top:10px;margin-bottom: 10px;">ご利用可能なクーポンコード {{ item.coupon_cd }} （{{ item.coupon_name }}）</p>
+                    <p style="color:chocolate; font-weight:bold; margin-top:10px;margin-bottom: 10px;">
+                        ご利用可能なクーポンコード <span id="couponCode{{ loop.index }}">{{ item.coupon_cd }}</span> （{{ item.coupon_name }}）
+                        <!-- クーポン設定画面へクーポンコードをパラメータとして遷移する -->
+                        <a class="btn btn-default btn-sm" href="{{ url('plugin_coupon_shopping') }}?coupon_code={{item.coupon_cd}}">クーポンを設定する</a>
+                    </p>
                 {% endfor %}
             {% endif %}
         {% endif %}
