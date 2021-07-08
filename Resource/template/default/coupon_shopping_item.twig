@@ -28,6 +28,29 @@
         // append to layout
         $(".ec-orderConfirm").last().before($("#coupon").detach());
     })
+
+    function couponCopyToClipboard(index) {
+        // クーポンコード要素の取得
+        var couponCode = document.getElementById("couponCode"+index);
+
+        //rangeオブジェクトの作成
+        var range = document.createRange();
+        
+        // 取得したクーポンコードの内側を範囲とする
+        range.selectNodeContents(couponCode);
+        
+        // 範囲を選択状態にする
+        window.getSelection().addRange(range);
+
+        // 選択しているテキストをクリップボードにコピーする
+        document.execCommand("Copy");
+
+        // 選択範囲をクリアする
+        window.getSelection().removeRange(range);
+
+        // ボタンのテキストを変更する
+        document.getElementById("couponCopyButton"+index).value="コピーしました";
+    }
 </script>
 
 <div id="coupon" class="ec-orderCoupon">
@@ -41,7 +64,10 @@
             {{ 'plugin_coupon.front.shopping.message.empty'|trans }}
             {% if userOrderCoupon %}
                 {% for item in userOrderCoupon %}
-                    <p style="color:chocolate; font-weight:bold; margin-top:10px;margin-bottom: 10px;">ご利用可能なクーポンコード {{ item.coupon_cd }} （{{ item.coupon_name }}）</p>
+                    <p style="color:chocolate; font-weight:bold; margin-top:10px;margin-bottom: 10px;">
+                        ご利用可能なクーポンコード <span id="couponCode{{ loop.index }}">{{ item.coupon_cd }}</span> （{{ item.coupon_name }}）
+                        <input type="button" id="couponCopyButton{{ loop.index }}" class="btn btn-default btn-sm" value="コピーする" onclick="couponCopyToClipboard({{ loop.index }})">
+                    </p>
                 {% endfor %}
             {% endif %}
         {% endif %}
